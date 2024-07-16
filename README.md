@@ -1,4 +1,4 @@
-# ethercat
+## ethercat
 EPICS support to read/write to ethercat based hardware
 
 Prerequisites: [IgH EtherCAT Master for Linux](http://etherlab.org/en/ethercat/index.php)
