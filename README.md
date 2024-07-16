@@ -104,3 +104,19 @@ Finally, go back to the top IOC folder, and edit the st.cmd file to include the 
 > dbLoadRecords("../../db/EK1100.template", "DEVICE=VERA:1,PORT=COUPLER_00,SCAN=I/O Intr")
 
 You can freely change the values for DEVICE and for PORT - DEVICE is the name with which you will call the device, and PORT acts as a kind of extra name to identify it.
+
+## Execution
+Open a terminal, enter root (with 'su -'), and start your EtherCAT Master (as seen above)
+
+Open another terminal, navigate to ~/EPICS/ethercat/iocs/scanTest/etc and start the scanner with the following command:
+> sudo ../../../bin/linux-x86_64/scanner scanner.xml "/tmp/scan1"
+
+Finally, open another terminal and navigate to the top folder of your ioc, e.g. ~/EPICS/ethercat/iocs/scanTest/ and execute following command:
+> ./st.cmd
+
+If at any point you can not run an executable due to missing permissions try one of these commands:
+> sudo chmod u+x filename
+>
+> sudo chown user filename
+
+Running ./st.cmd should now open the EPICS terminal. Use dbl to see all of you Process Variables (PVs), caput to write to a variable or caget to read from one.
