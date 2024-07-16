@@ -1,0 +1,224 @@
+# ethercat gadc.template
+# % macro, DEVICE, EtherCAT slave
+# % macro, CHANNEL, ADC channel
+# % macro, PORT, asyn port for EtherCAT slave
+# % macro, SAMPLES, number of samples in waveform
+# % macro, SCAN, polling period
+# % macro, MDEL, MDEL for VALUE and INTEGRAL fields
+# % macro, INTSCAN, polling period for the INTERRUPT parameter
+# % macro, name, name for gui element
+# % gui, $(name=), edm, AdcControl.edl, DEVICE=$(DEVICE),CHANNEL=$(CHANNEL)
+
+# % gui, $(name=), boyembed, ethercatApp_opi/gadc_embed_box.opi, DEVICE=$(DEVICE), CHANNEL=$(CHANNEL), name=$(name=)
+# % gui, $(name=), boyembed, ethercatApp_opi/gadc_embed.opi, DEVICE=$(DEVICE), CHANNEL=$(CHANNEL), name=$(name=)
+# % gui, $(name=), boydetail, ethercatApp_opi/gadc_detail.opi, DEVICE=$(DEVICE), CHANNEL=$(CHANNEL), name=$(name=)
+
+# <GUI tag>, <name>, <type>, <descr>, <PV>
+# Where <type> is in <demand|readback|enum|statusbits|command|toggle>
+# % gui, $(name=), demand, Samples, $(DEVICE):ADC$(CHANNEL)_SAMPLES
+# % gui, $(name=), demand, Average, $(DEVICE):ADC$(CHANNEL)_AVERAGE
+# % gui, $(name=), readback, Value, $(DEVICE):ADC$(CHANNEL)_VALUE
+# % gui, $(name=), readback, Status, $(DEVICE):ADC$(CHANNEL)_STATE
+# % gui, $(name=), enum, Retrigger, $(DEVICE):ADC$(CHANNEL)_RETRIGGER
+# % gui, $(name=), enum, Enable, $(DEVICE):ADC$(CHANNEL)_ENABLED
+# % gui, $(name=), readback, Enabled, $(DEVICE):ADC$(CHANNEL)_ENABLED_R
+
+record(longout, "$(DEVICE):ADC$(CHANNEL)_CHANBUFF")
+{
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT)_ADC$(CHANNEL))CHANBUFF")
+   field(DOL,  "10000000")
+   field(PINI, "YES")
+}
+
+record(longout, "$(DEVICE):ADC$(CHANNEL)_INFO")
+{
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT)_ADC$(CHANNEL))INFO")
+   field(PINI, "YES")
+}
+
+record(longout, "$(DEVICE):ADC$(CHANNEL)_SAMPLES")
+{
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT)_ADC$(CHANNEL))SAMPLES")
+}
+
+record(longout, "$(DEVICE):ADC$(CHANNEL)_OFFSET")
+{
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT)_ADC$(CHANNEL))OFFSET")
+}
+
+record(mbbo, "$(DEVICE):ADC$(CHANNEL)_MODE")
+{
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT)_ADC$(CHANNEL))MODE")
+   field(ZRVL, "0")
+   field(ONVL, "1")
+   field(TWVL, "2")
+   field(ZRST, "CONTINUOUS")
+   field(ONST, "TRIGGERED")
+   field(TWST, "GATED")
+   field(PINI, "YES")
+   field(VAL,  "0")
+}
+
+record(busy, "$(DEVICE):ADC$(CHANNEL)_TRIGGER")
+{
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT)_ADC$(CHANNEL))TRIGGER")
+   field(ZNAM, "Done")
+   field(ONAM, "Acquire")
+   field(VAL,  "0")
+}
+
+record(longout, "$(DEVICE):ADC$(CHANNEL)_CAPTURE")
+{
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT)_ADC$(CHANNEL))CAPTURE")
+   field(DOL,  "1")
+   field(PINI, "YES")
+}
+
+record(longout, "$(DEVICE):ADC$(CHANNEL)_AVERAGE")
+{
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT)_ADC$(CHANNEL))AVERAGE")
+}
+
+record(waveform, "$(DEVICE):ADC$(CHANNEL)_WAVEFORM")
+{
+    field(DTYP, "asynInt32ArrayIn")
+    field(NELM, "$(SAMPLES)")
+    field(SCAN, "I/O Intr")
+    field(FTVL, "LONG")
+    field(INP,  "@asyn($(PORT)_ADC$(CHANNEL))WAVEFORM")
+}
+
+record(longin, "$(DEVICE):ADC$(CHANNEL)_BUFFERCOUNT")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT)_ADC$(CHANNEL))BUFFERCOUNT")
+   field(SCAN, "1 second")
+}
+
+# % archiver 10 Monitor
+record(longin, "$(DEVICE):ADC$(CHANNEL)_VALUE")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT)_ADC$(CHANNEL))VALUE")
+   field(SCAN, "$(SCAN)")
+   field(MDEL, "$(MDEL=-1)")
+}
+
+record(ai, "$(DEVICE):ADC$(CHANNEL)_INTEGRAL")
+{
+   field(DTYP, "asynFloat64")
+   field(INP,  "@asyn($(PORT)_ADC$(CHANNEL))INTEGRAL")
+   field(PREC, "3")
+   field(SCAN, "$(SCAN)")
+   field(MDEL, "$(MDEL=-1)")
+}
+
+record(mbbi, "$(DEVICE):ADC$(CHANNEL)_STATE")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT)_ADC$(CHANNEL))STATE")
+   field(SCAN, "$(SCAN)")
+   field(ZRVL, "0")
+   field(ONVL, "1")
+   field(TWVL, "2")
+   field(ZRST, "WAITING")
+   field(ONST, "TRIGGERED")
+   field(TWST, "DONE")
+
+}
+
+record(bi, "$(DEVICE):ADC$(CHANNEL)_ENABLED_R")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT)_ADC$(CHANNEL))ENABLED")
+   field(SCAN, "$(SCAN)")
+   field(ZNAM, "DISABLED")
+   field(ONAM, "ENABLED")
+}
+
+record(bo, "$(DEVICE):ADC$(CHANNEL)_ENABLED")
+{
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT)_ADC$(CHANNEL))ENABLED")
+   field(ZNAM, "DISABLED")
+   field(ONAM, "ENABLED")
+   field(PINI, "YES")
+   field(VAL,  "0")
+}
+
+record(bo, "$(DEVICE):ADC$(CHANNEL)_RETRIGGER")
+{
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT)_ADC$(CHANNEL))RETRIGGER")
+   field(ZNAM, "DISABLED")
+   field(ONAM, "ENABLED")
+   field(PINI, "YES")
+   field(VAL,  "1")
+}
+
+record(longout, "$(DEVICE):ADC$(CHANNEL)_INTERRUPT")
+{
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT)_ADC$(CHANNEL))INTERRUPT")
+   field(SCAN, "$(INTSCAN)")
+}
+
+record(longout, "$(DEVICE):ADC$(CHANNEL)_CLEAR")
+{
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT)_ADC$(CHANNEL))CLEAR")
+}
+
+record(mbbo, "$(DEVICE):FREQ$(CHANNEL)")
+{
+   field(DTYP, "Raw Soft Channel")
+   field(SCAN, "Passive")
+   field(PINI, "YES")
+   field(DOL, "0")
+   field(ZRST, "200Hz")
+   field(ONST, "100Hz")
+   field(TWST, "50Hz")
+   field(THST, "40Hz")
+   field(FRST, "25Hz")
+   field(FVST, "20Hz")
+   field(SXST, "10Hz")
+   field(SVST, "5Hz")
+   field(EIST, "4Hz")
+   field(NIST, "2Hz")
+   field(TEST, "1Hz")
+   field(ZRVL, "5")
+   field(ONVL, "10")
+   field(TWVL, "20")
+   field(THVL, "25")
+   field(FRVL, "40")
+   field(FVVL, "50")
+   field(SXVL, "100")
+   field(SVVL, "200")
+   field(EIVL, "250")
+   field(NIVL, "500")
+   field(TEVL, "1000")
+   field(FLNK, "$(DEVICE):SET_SAMPLES$(CHANNEL)")
+}
+
+record(ao, "$(DEVICE):SET_SAMPLES$(CHANNEL)")
+{
+   field(DOL,  "$(DEVICE):FREQ$(CHANNEL).RVAL")
+   field(OMSL, "closed_loop")
+   field(OUT,  "$(DEVICE):ADC$(CHANNEL)_SAMPLES PP")
+   field(FLNK, "$(DEVICE):SET_AVERAGE$(CHANNEL)")
+}
+
+record(ao, "$(DEVICE):SET_AVERAGE$(CHANNEL)")
+{
+   field(DOL,  "$(DEVICE):FREQ$(CHANNEL).RVAL")
+   field(OMSL, "closed_loop")
+   field(OUT,  "$(DEVICE):ADC$(CHANNEL)_AVERAGE PP")
+}
