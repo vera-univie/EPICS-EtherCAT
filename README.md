@@ -1,25 +1,85 @@
-## ethercat
+This module is an adapted version of the ethercat module for EPICS made by Diamond Light Source (DLS).
+It was made for use at VERA (University of Vienna), but should work on other systems, as long as it is properly installed.
+See the installation guide, or use our installation scripts at ... to install
+
+
+# ethercat
 EPICS support to read/write to ethercat based hardware
 
 Prerequisites: [IgH EtherCAT Master for Linux](http://etherlab.org/en/ethercat/index.php)
 
-This EPICS module builds with a patched version of etherlab, described in the file etc/makeDocumentation/building.src
+# Guide
+## Installation and Setup
+#########
 
-The documentation was made when doxygen at DLS would build in the
-folder etc/makeDocumentation.
+When editing the different files, if one of these appears, change it to this value (replace the paths with your correct path):
 
-The doxygen documentation is no longer building at Diamond, but the "sources" are in
-the folder etc/makeDocumentation.
+VERSION= ## make this empty
 
-Release notes in
-etc/makeDocumentation/release_notes.src
+ETHERLAB=/opt/etherlab/bin
 
-Please email with issues as the maintainer has been know to ignore
-github notifications for months.
+ETHERLABPREFIX=$(ETHERLAB)/..
 
-Maintainer notes
+ETHERCAT=/home/user/EPICS/ethercat
 
-Before making a release:
+ECASYN=/home/user/EPICS/ethercat
 
-1. Check/update the version in ethercatApp/scannerSrc/version.h
-2. Write release notes in etc/makeDocumentation/release_notes.src
+ASYN=/home/user/EPICS/support/asyn
+
+SUPPORT=/home/user/EPICS/support
+
+EPICS_BASE=/home/user/EPICS/epics-base
+
+#########
+
+
+Start in your base EPICS directory. This should also contain your epics-base, as well as your support folders.
+
+Follow these steps (if '>' then enter into command line)
+
+> git clone https://github.com/vera-univie/EPICS-EtherCAT.git ethercat
+>
+> cd ethercat
+
+edit ethercatApp/scannerSrc/Makefile
+
+Change lines as mentioned above ; below ETHERLABPREFIX, add:
+> ETHERCAT_MASTER_ETHERLAB=/home/user/EtherLAB/ethercat-master-etherlab ## this must be the path to your EtherLAB Master
+
+and modify these values:
+> scanner_INCLUDES += -I$(ETHERCAT_MASTER_ETHERLAB)/lib
+> 
+> serialtool_INCLUDES += -I$(ETHERCAT_MASTER_ETHERLAB)/master
+> 
+> get-slave-revisions_INCLUDES += -I$(ETHERCAT_MASTER_ETHERLAB)/master
+
+Now make the same modifications to ethercatApp/src/Makefile
+
+Now edit all of these RELEASE files of the IOCs, by changing all of the appearing variables to the values that we have already defined at the beginning of the chapter
+> iocs/scanTest/configure/RELEASE
+> 
+> iocs/veraBasic/configure/RELEASE
+> 
+> iocs/Backup_veraBasic/configure/RELEASE
+
+## Configuration
+### Example
+> cd ~/EPICS/ethercat/iocs/scanTest/etc
+> 
+> touch chain.xml
+
+edit this file to add your components with their values (you can see these using the EtherCAT Master in your terminal), such as:
+> \<chain>
+> 
+> \<device type_name="EK1100" revision="0x00110000" position="0" name="COUPLER_00" />
+> 
+> \<device type_name="EL2808" revision="0x00120000" position="1" name="DO_00" />
+> 
+> \<device type_name="EL2808" revision="0x00120000" position="2" name="DO_01" />
+> 
+> \<device type_name="EL2808" revision="0x00120000" position="3" name="DO_02" />
+> 
+> \</chain>
+
+Check the ~/EPICS/ethercat/db
+
