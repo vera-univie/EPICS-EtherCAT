@@ -64,7 +64,9 @@ Now edit all of these RELEASE files of the IOCs, by changing all of the appearin
 
 ## Configuration
 ### Example
-To be safe, go into the Application folder of your IOC and make.
+To be safe, go into the Application folder of your IOC and > make.
+
+Then execute following commands:
 
 > cd ~/EPICS/ethercat/iocs/scanTest/etc
 > 
