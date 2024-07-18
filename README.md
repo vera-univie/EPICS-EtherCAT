@@ -8,7 +8,12 @@ EPICS support to read/write to ethercat based hardware
 
 Prerequisites: [IgH EtherCAT Master for Linux](http://etherlab.org/en/ethercat/index.php)
 
-# Guide
+# Automated Installation and Setup (RECOMMENDED)
+It is highly recommended that you use the setup scripts to easily and quickly setup EtherCAT for EPICS, as well as easily update your IOCs to work with new EtherCAT configurations.
+
+You can find these at our [repository with all of the automation scripts to setup EtherCAT und EPICS](https://github.com/vera-univie/Automated-Setup)
+
+# Manual Installation and Setup
 ## Installation and Setup
 #########
 
