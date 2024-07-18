@@ -1,6 +1,6 @@
 This module is an adapted version of the ethercat module for EPICS made by Diamond Light Source (DLS).
 It was made for use at VERA (University of Vienna), but should work on other systems, as long as it is properly installed.
-See the installation guide, or use our installation scripts at ... to install
+See the installation guide, or use [our installation scripts](https://github.com/vera-univie/Automated-Setup) to install
 
 
 # ethercat
