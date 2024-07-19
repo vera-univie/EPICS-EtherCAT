@@ -35,7 +35,10 @@ slaveInfoFiles = [
     "Beckhoff EL31xx.xml",
     "Beckhoff EK11xx.xml",
     "Beckhoff EL4xxx.xml",
-    "Beckhoff EL3xxx.xml"
+    "Beckhoff EL3xxx.xml",
+    "Beckhoff EK15xx.xml",
+    "Beckhoff EL1xxx.xml",
+    "Beckhoff EL15xx.xml"
     ]
 
 def build_iocbuilder_descriptions():
