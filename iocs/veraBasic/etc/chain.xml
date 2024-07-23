@@ -1,0 +1,4 @@
+<chain>
+<device type_name="EK1100" revision="0x00110000" position="0" name="COUPLER_00" />
+<device type_name="EL2652" revision="0x00110000" position="1" name="RO_00" />
+</chain>

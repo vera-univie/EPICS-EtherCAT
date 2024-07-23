@@ -1,0 +1,25 @@
+<scanner>
+<devices>
+  <!-- parsed from file /home/htlrennweg/EPICS/ethercat/etc/xml/Beckhoff EK11xx.xml -->
+  <device name="EK1100" vendor="0x00000002" product="0x044c2c52" revision="0x00110000">
+  </device>
+  <!-- parsed from file /home/htlrennweg/EPICS/ethercat/etc/xml/Beckhoff EL2xxx.xml -->
+  <device name="EL2652" vendor="0x00000002" product="0x0a5c3052" revision="0x00110000">
+    <sync index="0"  dir="Outputs"  watchdog="0">
+      <pdo name="Channel 1" index="0x00001600">
+        <entry name="Output" index="0x00007000" subindex="0x00000001" bit_length="1" datatype="BOOL" oversample="0" />
+      </pdo>
+      <pdo name="Channel 2" index="0x00001601">
+        <entry name="Output" index="0x00007010" subindex="0x00000001" bit_length="1" datatype="BOOL" oversample="0" />
+      </pdo>
+    </sync>
+  </device>
+</devices>
+<chain>
+<device type_name="EK1100" revision="0x00110000" position="0" name="COUPLER_00" />
+<device type_name="EL2652" revision="0x00110000" position="1" name="RO_00" />
+</chain>
+<sdorequests>
+</sdorequests>
+</scanner>
+
