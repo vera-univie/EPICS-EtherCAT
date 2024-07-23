@@ -1,3 +1,0 @@
--include $(CONFIG)/RULES.Dls
-include $(CONFIG)/RULES
-$(LIBNAME): ../Makefile

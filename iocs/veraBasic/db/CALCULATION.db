@@ -1,7 +1,0 @@
-record(calcout, "VERA:CALCULATION1")
-{
-  field("INPA", "VERA:8:INPUT1:VALUE")
-  field("INPB", "VERA:8:INPUT2:VALUE")
-  field("SCAN", ".2 second")
-  field("CALC", "A+B")
-}
